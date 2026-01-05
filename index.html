@@ -1,13 +1,196 @@
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-<title>
-Welcome to vibe coding world
-</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Gradient To-Do</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --accent-color: #764ba2;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .todo-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-weight: 700;
+            background: var(--bg-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            padding: 12px 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent-color);
+        }
+
+        button#add-btn {
+            background: var(--bg-gradient);
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        button#add-btn:active {
+            transform: scale(0.95);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background: white;
+            margin-bottom: 12px;
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            animation: slideUp 0.4s ease forwards;
+            transition: all 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-out {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            margin-right: 15px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .checkbox:hover {
+            background: rgba(118, 75, 162, 0.1);
+        }
+
+        .todo-text {
+            flex: 1;
+            font-size: 16px;
+        }
+
+        .completed-mark {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-안녕하세요
-<p>안녕하세요</p>
-<h1>안녕하세요</h1>
-<h4>안녕하세요</h4>
+
+<div class="container">
+    <div class="todo-card">
+        <h2>Today's Focus</h2>
+        <div class="input-group">
+            <input type="text" id="todo-input" placeholder="무엇을 해볼까요?" onkeypress="if(event.keyCode==13) addTodo()">
+            <button id="add-btn" onclick="addTodo()">추가</button>
+        </div>
+        <ul id="todo-list">
+            </ul>
+    </div>
+</div>
+
+<script>
+    function addTodo() {
+        const input = document.getElementById('todo-input');
+        const list = document.getElementById('todo-list');
+        
+        if (input.value.trim() === '') return;
+
+        // 리스트 아이템 생성
+        const li = document.createElement('li');
+        
+        // 체크 버튼 생성
+        const checkbox = document.createElement('div');
+        checkbox.className = 'checkbox';
+        checkbox.onclick = function() {
+            completeTodo(li);
+        };
+
+        // 텍스트 생성
+        const textSpan = document.createElement('span');
+        textSpan.className = 'todo-text';
+        textSpan.innerText = input.value;
+
+        li.appendChild(checkbox);
+        li.appendChild(textSpan);
+        list.appendChild(li);
+
+        input.value = '';
+    }
+
+    function completeTodo(element) {
+        // 완료 애니메이션 적용
+        element.style.background = '#f8f9fa';
+        element.querySelector('.checkbox').style.background = 'var(--accent-color)';
+        element.querySelector('.todo-text').style.textDecoration = 'line-through';
+        element.querySelector('.todo-text').style.color = '#aaa';
+        
+        // 0.6초 뒤에 목록에서 제거 (세련된 사라짐 효과)
+        setTimeout(() => {
+            element.classList.add('fade-out');
+            setTimeout(() => {
+                element.remove();
+            }, 400);
+        }, 300);
+    }
+</script>
+
 </body>
 </html>
