@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 창업 아이디어 전략 분석 및 로드맵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #F9FAFB; color: #1F2937; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; height: 350px; }
+        .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .phase-connector { position: absolute; top: 50%; left: 100%; width: 2rem; height: 2px; background-color: #E5E7EB; transform: translateY(-50%); z-index: 0; }
+        .last-phase .phase-connector { display: none; }
+        /* Custom scrollbar for horizontal sections if needed */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals & Professional Blues -->
+    <!-- Application Structure Plan:
+         1. Hero Section: High-level summary of the strategic pivot (Product-Led Growth).
+         2. Strategic Diagnosis (Comparison): Interactive Radar Chart comparing Idea 1 vs Idea 2 based on Team Fit, Scalability, and Ops Load.
+         3. The Core Strategy (Idea 1 Deep Dive): "The Knowledge Bridge" interactive section. Users click through the 3 Gaps (Prompt, Context, Feedback) to see the Before/After transformation.
+         4. Execution Roadmap: A horizontal timeline visualization. Clicking a phase reveals detailed tasks and tech stack alignment.
+         5. Tech Stack & Conclusion: Summary of the tools chosen for the MVP.
+         This structure prioritizes the decision-making flow: Why Idea 1? -> What is the specific strategy? -> How do we build it?
+    -->
+    <!-- Visualization & Content Choices:
+         1. Radar Chart (Chart.js): To visually demonstrate why Idea 1 is better for the current team (High Team Fit, Low Ops Load) compared to Idea 2.
+         2. Interactive Cards (HTML/JS): For the "Information Gaps". Allows users to actively explore the problem vs. solution space without overwhelming text.
+         3. Dynamic Task Lists (HTML/JS): For the Roadmap. Filters content based on the selected phase to keep the UI clean.
+         4. Flow Diagram (HTML/CSS): Visualizing the "Closed Loop" system using Flexbox/Grid layouts instead of static images.
+         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="font-bold text-xl text-stone-900 tracking-tight">AI Startup Strategy</div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-stone-600">
+                    <button onclick="scrollToSection('diagnosis')" class="hover:text-blue-600 transition-colors">진단 및 선택</button>
+                    <button onclick="scrollToSection('strategy')" class="hover:text-blue-600 transition-colors">핵심 전략</button>
+                    <button onclick="scrollToSection('roadmap')" class="hover:text-blue-600 transition-colors">로드맵</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden pt-16 pb-24 bg-gradient-to-br from-stone-50 to-stone-100">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-blue-800 uppercase bg-blue-100 rounded-full">
+                Final Strategic Report
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-stone-900 mb-6 leading-tight">
+                "제품이 곧 영업이다"<br>
+                <span class="text-blue-600">정보의 격차</span>를 파는 버티컬 SaaS
+            </h1>
+            <p class="text-lg md:text-xl text-stone-600 max-w-3xl mx-auto mb-10">
+                현재 팀(기획/개발 1명, UI/UX 1명)의 역량을 극대화할 수 있는 길은 <strong>운영 집약적 서비스</strong>가 아닌 <strong>기술 집약적 프로덕트</strong>입니다.
+                AI 데이터 플랫폼 사업의 성공적인 런칭을 위한 분석과 실행 전략을 제시합니다.
+            </p>
+            <div class="flex justify-center gap-4">
+                <button onclick="scrollToSection('diagnosis')" class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition-all transform hover:-translate-y-1">
+                    분석 결과 보기
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10">
+
+        <!-- Section 1: Diagnosis & Choice -->
+        <section id="diagnosis" class="mb-24 scroll-mt-24">
+            <div class="bg-white rounded-2xl shadow-xl p-8 border border-stone-100">
+                <div class="mb-8 border-b border-stone-100 pb-4">
+                    <h2 class="text-2xl font-bold text-stone-900">1. 비즈니스 모델 진단</h2>
+                    <p class="text-stone-500 mt-2">두 가지 아이디어의 강점과 리스크를 분석하여 현재 팀 구성에 최적화된 모델을 선정했습니다.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Text Analysis -->
+                    <div class="space-y-6">
+                        <div class="p-6 bg-blue-50 rounded-xl border-l-4 border-blue-500 relative cursor-pointer hover:bg-blue-100 transition-colors" onclick="updateRadar('idea1')">
+                            <div class="absolute top-4 right-4 text-blue-600 font-bold text-sm">추천 모델</div>
+                            <h3 class="text-lg font-bold text-stone-900 mb-2">Idea 1: 소상공인 마케팅 SaaS</h3>
+                            <p class="text-sm text-stone-700 mb-2"><strong>장점:</strong> 제품 중심 성장 가능, 현재 개발/UX 인력 구성에 최적.</p>
+                            <p class="text-sm text-stone-600"><strong>리스크:</strong> 낮은 진입장벽, 플랫폼 API 의존성.</p>
+                            <p class="text-xs text-blue-600 font-medium mt-3">→ 해결책: "Closed Loop" 최적화 엔진으로 진화</p>
+                        </div>
+
+                        <div class="p-6 bg-stone-50 rounded-xl border-l-4 border-stone-300 relative cursor-pointer hover:bg-stone-100 transition-colors" onclick="updateRadar('idea2')">
+                            <h3 class="text-lg font-bold text-stone-900 mb-2">Idea 2: 특화 데이터 라벨링</h3>
+                            <p class="text-sm text-stone-700 mb-2"><strong>장점:</strong> 틈새 시장의 높은 단가, 명확한 수요.</p>
+                            <p class="text-sm text-stone-600"><strong>리스크:</strong> '운영 지옥'. 고도의 인력 관리와 영업 필요.</p>
+                            <p class="text-xs text-stone-500 font-medium mt-3">→ 현재 인력으로는 감당하기 어려움</p>
+                        </div>
+                    </div>
+
+                    <!-- Chart -->
+                    <div class="flex flex-col items-center">
+                        <div class="chart-container">
+                            <canvas id="diagnosisChart"></canvas>
+                        </div>
+                        <p class="text-xs text-stone-400 mt-4 text-center">
+                            * Team Fit: 현재 인력 구성과의 적합성<br>
+                            * Ops Difficulty: 운영 난이도 (낮을수록 좋음)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Core Strategy (The Knowledge Bridge) -->
+        <section id="strategy" class="mb-24 scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-900">2. 핵심 전략: 정보의 격차(Information Gap) 해소</h2>
+                <p class="text-lg text-stone-600 mt-4 max-w-3xl mx-auto">
+                    단순한 '생성'은 더 이상 경쟁력이 아닙니다. 소상공인이 겪는 <strong>3가지 정보의 격차</strong>를 기술로 메워주는 
+                    <strong>"AI 마케팅 팀장"</strong>으로 포지셔닝해야 합니다.
+                </p>
+            </div>
+
+            <!-- Strategy Tabs -->
+            <div class="flex flex-wrap justify-center gap-4 mb-10">
+                <button id="tab-prompt" onclick="switchStrategy('prompt')" class="px-6 py-2 rounded-full font-medium text-sm transition-all bg-stone-800 text-white shadow-md">
+                    1. 프롬프트 격차
+                </button>
+                <button id="tab-context" onclick="switchStrategy('context')" class="px-6 py-2 rounded-full font-medium text-sm transition-all bg-stone-200 text-stone-600 hover:bg-stone-300">
+                    2. 맥락(Context) 격차
+                </button>
+                <button id="tab-feedback" onclick="switchStrategy('feedback')" class="px-6 py-2 rounded-full font-medium text-sm transition-all bg-stone-200 text-stone-600 hover:bg-stone-300">
+                    3. 피드백 격차
+                </button>
+            </div>
+
+            <!-- Dynamic Strategy Content -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-stone-200 min-h-[400px]">
+                
+                <!-- Content Area -->
+                <div id="strategy-content" class="p-8 md:p-12">
+                    <!-- Content injected by JS -->
+                </div>
+
+            </div>
+
+            <!-- Closed Loop Concept Visualization -->
+            <div class="mt-12 bg-blue-50 rounded-xl p-8 border border-blue-100">
+                <h3 class="text-lg font-bold text-center text-blue-900 mb-8">지속 가능한 경쟁력: "Closed Loop" 시스템</h3>
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 max-w-4xl mx-auto">
+                    <div class="flex-1 text-center p-4 bg-white rounded-lg shadow-sm w-full">
+                        <div class="text-2xl mb-2">⚙️</div>
+                        <div class="font-bold text-stone-800">1. 생성/배포</div>
+                        <div class="text-xs text-stone-500 mt-1">AI 자동화</div>
+                    </div>
+                    <div class="hidden md:block text-blue-300 text-2xl font-bold">→</div>
+                    <div class="block md:hidden text-blue-300 text-2xl font-bold">↓</div>
+                    
+                    <div class="flex-1 text-center p-4 bg-white rounded-lg shadow-sm w-full">
+                        <div class="text-2xl mb-2">📊</div>
+                        <div class="font-bold text-stone-800">2. 성과 측정</div>
+                        <div class="text-xs text-stone-500 mt-1">데이터 수집</div>
+                    </div>
+                    <div class="hidden md:block text-blue-300 text-2xl font-bold">→</div>
+                    <div class="block md:hidden text-blue-300 text-2xl font-bold">↓</div>
+
+                    <div class="flex-1 text-center p-4 bg-white rounded-lg shadow-sm w-full ring-2 ring-blue-500 ring-offset-2">
+                        <div class="text-2xl mb-2">🧠</div>
+                        <div class="font-bold text-blue-800">3. 최적화 제안</div>
+                        <div class="text-xs text-blue-600 mt-1">격차 해소의 핵심</div>
+                    </div>
+                    <div class="hidden md:block text-blue-300 text-2xl font-bold">⤴</div>
+                    <div class="block md:hidden text-blue-300 text-2xl font-bold">↑</div>
+                </div>
+                <p class="text-center text-sm text-blue-600 mt-6 font-medium">
+                    "결과가 다음 행동을 결정하는 구조를 만들어야 고객이 이탈하지 않습니다."
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 3: Execution Roadmap -->
+        <section id="roadmap" class="mb-24 scroll-mt-24">
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold text-stone-900">3. MVP 실행 로드맵 (8주)</h2>
+                <p class="text-stone-500 mt-2">
+                    기획자/개발자 1명, 디자이너 1명 구조에서 가능한 현실적인 마일스톤입니다. 
+                    <strong>'선택과 집중'</strong>을 통해 핵심 가설을 검증합니다.
+                </p>
+            </div>
+
+            <!-- Roadmap Phases Control -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-8">
+                <button onclick="setPhase(1)" id="phase-btn-1" class="phase-btn p-3 rounded-lg text-left border transition-all bg-blue-600 text-white border-blue-600 shadow-md">
+                    <div class="text-xs opacity-80">Weeks 1-2</div>
+                    <div class="font-bold">1. 기반 & 데이터</div>
+                </button>
+                <button onclick="setPhase(2)" id="phase-btn-2" class="phase-btn p-3 rounded-lg text-left border bg-white text-stone-500 border-stone-200 hover:bg-stone-50 transition-all">
+                    <div class="text-xs opacity-70">Weeks 3-5</div>
+                    <div class="font-bold">2. No-Prompt UI</div>
+                </button>
+                <button onclick="setPhase(3)" id="phase-btn-3" class="phase-btn p-3 rounded-lg text-left border bg-white text-stone-500 border-stone-200 hover:bg-stone-50 transition-all">
+                    <div class="text-xs opacity-70">Weeks 6-7</div>
+                    <div class="font-bold">3. 성과 루프</div>
+                </button>
+                <button onclick="setPhase(4)" id="phase-btn-4" class="phase-btn p-3 rounded-lg text-left border bg-white text-stone-500 border-stone-200 hover:bg-stone-50 transition-all">
+                    <div class="text-xs opacity-70">Week 8</div>
+                    <div class="font-bold">4. 런칭 & 폴리싱</div>
+                </button>
+            </div>
+
+            <!-- Phase Detail Card -->
+            <div class="bg-white rounded-xl border border-stone-200 p-6 md:p-8 shadow-sm min-h-[300px] relative">
+                <div id="phase-content">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <!-- Tech Stack Alignment -->
+            <div class="mt-8 pt-8 border-t border-stone-200">
+                <h4 class="text-sm font-bold text-stone-400 uppercase tracking-wider mb-4">Recommended Tech Stack</h4>
+                <div class="flex flex-wrap gap-3">
+                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">Next.js (App Router)</span>
+                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">Supabase (Auth/DB)</span>
+                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">Tailwind CSS</span>
+                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">Shadcn UI</span>
+                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">OpenAI GPT-4o-mini</span>
+                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">LangChain</span>
+                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">Python/Playwright</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-12 border-t border-stone-200">
+            <h3 class="text-lg font-bold text-stone-800 mb-2">Final Advice</h3>
+            <p class="text-stone-500 max-w-2xl mx-auto mb-6">
+                "초기 2주, 전국이 아닌 <strong>특정 핫플레이스(예: 성수동)</strong> 한 곳의 데이터만 완벽하게 장악하세요.<br>
+                그 좁은 시장에서의 압도적인 정보 격차가 성공의 열쇠입니다."
+            </p>
+            <div class="text-xs text-stone-400">
+                Generated based on Strategy Report for AI Data Platform Startup
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- Data Definitions ---
+
+        const strategyDetails = {
+            prompt: {
+                title: "1. 프롬프트 격차: '무엇을 시켜야 할지 모른다'",
+                problem: "사용자는 '좋은 질문'을 할 줄 모릅니다. 결과가 나쁘면 AI 탓을 하고 떠납니다.",
+                solution: "<strong>No-Prompt Interface:</strong> 사용자가 글을 쓰는 대신, 상황(Context) 버튼만 누르게 하세요.",
+                example: {
+                    before: "\"카페 홍보글 써줘\" (모호함)",
+                    after: "\"비 오는 날\", \"재고 소진\", \"주말 할인\" 버튼 클릭 → 자동 최적화 생성"
+                },
+                tags: ["LangChain", "Prompt Chaining"]
+            },
+            context: {
+                title: "2. 맥락 격차: '우리 동네를 모른다'",
+                problem: "범용 AI는 '성수동 감성'과 '을지로 감성'을 구분하지 못합니다.",
+                solution: "<strong>Hyper-Local RAG:</strong> 특정 지역/업종의 트렌드 데이터를 미리 벡터 DB에 넣어두고, 생성 시 주입합니다.",
+                example: {
+                    before: "일반적인 커피 맛 묘사",
+                    after: "\"성수동 2030 여성이 선호하는 인더스트리얼 인테리어 무드\" 반영"
+                },
+                tags: ["Vector DB", "Crawling", "RAG"]
+            },
+            feedback: {
+                title: "3. 피드백 격차: '이게 잘 된 건지 모른다'",
+                problem: "소상공인은 데이터 분석가가 아닙니다. 그래프를 봐도 행동을 못합니다.",
+                solution: "<strong>Actionable Dashboard:</strong> 분석 대신 '제안'을 합니다. 성과 기반의 재실행 루프를 만듭니다.",
+                example: {
+                    before: "도달률 그래프 표시",
+                    after: "\"지난주 목요일 반응 좋음. 오늘 다시 올려볼까요?\" (Y/N)"
+                },
+                tags: ["Instagram Graph API", "Data Analysis"]
+            }
+        };
+
+        const roadmapPhases = [
+            {
+                id: 1,
+                title: "Phase 1: 기반 구축 및 데이터 확보 (1-2주)",
+                goal: "타겟 핫플레이스(예: 성수동)의 트렌드 데이터 장악",
+                tasks: [
+                    { role: "기획", desc: "버티컬 업종 선정 및 타겟 페르소나 정의 (소상공인 인터뷰)" },
+                    { role: "개발", desc: "Python/Playwright로 특정 지역 인스타/네이버 크롤러 구축" },
+                    { role: "디자인", desc: "브랜드 아이덴티티 및 핵심 컬러 시스템 수립" },
+                    { role: "공통", desc: "초기 RAG용 로컬 트렌드 지식 베이스(Knowledge Base) 구축" }
+                ],
+                focus: "Tech: Python, Playwright, Vector DB"
+            },
+            {
+                id: 2,
+                title: "Phase 2: No-Prompt UI 구현 (3-5주)",
+                goal: "사용자가 고민 없이 버튼 하나로 고품질 컨텐츠 생성",
+                tasks: [
+                    { role: "디자인", desc: "'상황 버튼' 중심의 컨텐츠 생성 Flow 와이어프레임 설계" },
+                    { role: "개발", desc: "네이버 지도 API 연동: 가게 정보(메뉴, 위치) 자동 수집" },
+                    { role: "개발", desc: "LangChain 기반 업종별 동적 프롬프트 템플릿 엔진 개발" },
+                    { role: "UX", desc: "AI 생성 결과물에 '마케팅적 근거'를 표시하는 UI 설계" }
+                ],
+                focus: "Tech: Next.js, LangChain, OpenAI API"
+            },
+            {
+                id: 3,
+                title: "Phase 3: 성과 루프(Closed-Loop) 구축 (6-7주)",
+                goal: "배포 결과를 분석하여 다음 행동 제안하기",
+                tasks: [
+                    { role: "개발", desc: "인스타그램 Graph API 연동 (배포 및 인사이트 수집)" },
+                    { role: "디자인", desc: "성과 지표를 '행동 제안(Action Item)'으로 치환한 대시보드" },
+                    { role: "개발", desc: "성과 데이터 기반 차기 컨텐츠 추천 알고리즘 구현" },
+                    { role: "기획", desc: "초기 사용자 5인 대상 사용성 테스트(UT) 및 피드백" }
+                ],
+                focus: "Tech: Supabase Cron Jobs, Meta API"
+            },
+            {
+                id: 4,
+                title: "Phase 4: 폴리싱 및 런칭 (8주)",
+                goal: "안정적인 MVP 시장 출시",
+                tasks: [
+                    { role: "전체", desc: "버그 수정 및 UI 폴리싱 (애니메이션, 로딩 처리)" },
+                    { role: "개발", desc: "Vercel 배포 및 도메인 연결" },
+                    { role: "기획", desc: "클로즈 베타 테스터 모집 및 온보딩 가이드 제작" }
+                ],
+                focus: "Tech: Vercel, Analytics"
+            }
+        ];
+
+        // --- Radar Chart Initialization ---
+        let radarChart;
+
+        function initRadarChart() {
+            const ctx = document.getElementById('diagnosisChart').getContext('2d');
+            
+            const data = {
+                labels: ['Team Fit (기획/UX)', 'Scalability (확장성)', 'Market Novelty (참신성)', 'Ops Ease (운영 용이성)', 'Dev Feasibility (개발 가능성)'],
+                datasets: [{
+                    label: 'Idea 1: SaaS Platform',
+                    data: [90, 85, 40, 80, 85], // High Fit, High Ops Ease, Low Novelty
+                    fill: true,
+                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                    borderColor: 'rgb(37, 99, 235)',
+                    pointBackgroundColor: 'rgb(37, 99, 235)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(37, 99, 235)'
+                }, {
+                    label: 'Idea 2: Data Labeling',
+                    data: [50, 60, 80, 20, 70], // Low Ops Ease (Hell), High Novelty
+                    fill: true,
+                    backgroundColor: 'rgba(120, 113, 108, 0.2)',
+                    borderColor: 'rgb(120, 113, 108)',
+                    pointBackgroundColor: 'rgb(120, 113, 108)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(120, 113, 108)'
+                }]
+            };
+
+            const config = {
+                type: 'radar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: { borderWidth: 3 }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { display: false } // Hide numbers for cleaner look
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            };
+
+            radarChart = new Chart(ctx, config);
+        }
+
+        // --- Interaction Functions ---
+
+        function updateRadar(idea) {
+            // Highlights one dataset by dimming the other
+            const idea1Index = 0;
+            const idea2Index = 1;
+            
+            if (idea === 'idea1') {
+                radarChart.data.datasets[idea1Index].backgroundColor = 'rgba(37, 99, 235, 0.5)';
+                radarChart.data.datasets[idea2Index].backgroundColor = 'rgba(120, 113, 108, 0.05)';
+                radarChart.data.datasets[idea2Index].borderColor = 'rgba(120, 113, 108, 0.2)';
+            } else {
+                radarChart.data.datasets[idea1Index].backgroundColor = 'rgba(37, 99, 235, 0.05)';
+                radarChart.data.datasets[idea1Index].borderColor = 'rgba(37, 99, 235, 0.2)';
+                radarChart.data.datasets[idea2Index].backgroundColor = 'rgba(120, 113, 108, 0.5)';
+                radarChart.data.datasets[idea2Index].borderColor = 'rgb(120, 113, 108)';
+            }
+            radarChart.update();
+        }
+
+        function switchStrategy(key) {
+            // 1. Update Buttons
+            ['prompt', 'context', 'feedback'].forEach(k => {
+                const btn = document.getElementById(`tab-${k}`);
+                if (k === key) {
+                    btn.classList.remove('bg-stone-200', 'text-stone-600');
+                    btn.classList.add('bg-stone-800', 'text-white', 'shadow-md');
+                } else {
+                    btn.classList.add('bg-stone-200', 'text-stone-600');
+                    btn.classList.remove('bg-stone-800', 'text-white', 'shadow-md');
+                }
+            });
+
+            // 2. Update Content with Animation
+            const contentDiv = document.getElementById('strategy-content');
+            const data = strategyDetails[key];
+            
+            contentDiv.innerHTML = `
+                <div class="animate-fade-in-up">
+                    <div class="flex flex-col md:flex-row justify-between items-start gap-8">
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold text-stone-900 mb-4">${data.title}</h3>
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-100 mb-4">
+                                <span class="font-bold text-red-700 block mb-1">😟 Problem</span>
+                                <p class="text-stone-700">${data.problem}</p>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                <span class="font-bold text-blue-700 block mb-1">💡 Solution</span>
+                                <p class="text-stone-800">${data.solution}</p>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                ${data.tags.map(tag => `<span class="text-xs px-2 py-1 bg-stone-100 text-stone-500 rounded border">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="w-full md:w-1/2 bg-stone-50 rounded-xl p-6 border border-stone-200 relative">
+                            <div class="absolute top-0 right-0 bg-stone-200 text-stone-600 text-xs px-2 py-1 rounded-bl-lg font-bold">Scenario</div>
+                            <div class="space-y-4 mt-2">
+                                <div>
+                                    <div class="text-xs font-bold text-stone-400 mb-1">BEFORE (Chat GPT)</div>
+                                    <div class="p-3 bg-white border border-stone-200 rounded text-stone-400 italic text-sm">
+                                        ${data.example.before}
+                                    </div>
+                                </div>
+                                <div class="text-center text-stone-300">⬇</div>
+                                <div>
+                                    <div class="text-xs font-bold text-blue-500 mb-1">AFTER (Our SaaS)</div>
+                                    <div class="p-3 bg-blue-600 text-white rounded shadow-lg text-sm font-medium">
+                                        ${data.example.after}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function setPhase(phaseId) {
+            // Update buttons
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(`phase-btn-${i}`);
+                if (i === phaseId) {
+                    btn.className = "phase-btn p-3 rounded-lg text-left border transition-all bg-blue-600 text-white border-blue-600 shadow-md ring-2 ring-blue-200 transform scale-105";
+                } else {
+                    btn.className = "phase-btn p-3 rounded-lg text-left border bg-white text-stone-500 border-stone-200 hover:bg-stone-50 transition-all opacity-80";
+                }
+            }
+
+            // Update content
+            const phase = roadmapPhases.find(p => p.id === phaseId);
+            const contentDiv = document.getElementById('phase-content');
+            
+            const taskListHTML = phase.tasks.map(t => `
+                <li class="flex items-start">
+                    <span class="inline-flex items-center justify-center h-6 w-16 rounded-full bg-stone-100 text-stone-600 text-[10px] font-bold uppercase mr-3 mt-0.5 flex-shrink-0 border border-stone-200">
+                        ${t.role}
+                    </span>
+                    <span class="text-stone-700 text-sm leading-relaxed">${t.desc}</span>
+                </li>
+            `).join('');
+
+            contentDiv.innerHTML = `
+                <div class="animate-fade-in">
+                    <div class="flex flex-col md:flex-row justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-stone-900">${phase.title}</h3>
+                            <p class="text-blue-600 font-medium mt-1">🎯 Goal: ${phase.goal}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-stone-50 rounded-lg p-5 border border-stone-100">
+                        <ul class="space-y-3">
+                            ${taskListHTML}
+                        </ul>
+                    </div>
+
+                    <div class="mt-4 text-right">
+                        <span class="text-xs font-bold text-stone-400 uppercase tracking-wide">Key Tech:</span>
+                        <span class="text-xs text-stone-600 ml-2 font-mono bg-stone-100 px-2 py-1 rounded">${phase.focus}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- Animations CSS Injection ---
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in-up { animation: fadeInUp 0.4s ease-out forwards; }
+            .animate-fade-in { animation: fadeInUp 0.3s ease-out forwards; }
+        `;
+        document.head.appendChild(style);
+
+        // --- Initialization ---
+        window.onload = function() {
+            initRadarChart();
+            switchStrategy('prompt'); // Default tab
+            setPhase(1); // Default phase
+        };
+
+    </script>
+</body>
+</html>
