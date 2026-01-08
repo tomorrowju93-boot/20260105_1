@@ -3,467 +3,424 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 창업 아이디어 전략 분석 및 로드맵</title>
+    <title>M2COSMOS 사업 아이디어 전략 대시보드</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: #F9FAFB; color: #1F2937; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #050505; color: #E5E7EB; overflow-x: hidden; }
         .chart-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; height: 350px; }
-        .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
-        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .phase-connector { position: absolute; top: 50%; left: 100%; width: 2rem; height: 2px; background-color: #E5E7EB; transform: translateY(-50%); z-index: 0; }
-        .last-phase .phase-connector { display: none; }
-        /* Custom scrollbar for horizontal sections if needed */
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-card { background: rgba(30, 30, 30, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .accent-cyan { color: #22D3EE; }
+        .bg-accent-cyan { background-color: #22D3EE; }
+        .accent-amber { color: #F59E0B; }
+        .border-accent-amber { border-color: #F59E0B; }
+        .text-glow { text-shadow: 0 0 15px rgba(34, 211, 238, 0.5); }
+        .hero-gradient { background: radial-gradient(circle at 50% 50%, #1e1e1e 0%, #050505 100%); }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
-    <!-- Chosen Palette: Warm Neutrals & Professional Blues -->
+    <!-- Chosen Palette: Deep Black, Neon Cyan, and Rich Amber -->
     <!-- Application Structure Plan:
-         1. Hero Section: High-level summary of the strategic pivot (Product-Led Growth).
-         2. Strategic Diagnosis (Comparison): Interactive Radar Chart comparing Idea 1 vs Idea 2 based on Team Fit, Scalability, and Ops Load.
-         3. The Core Strategy (Idea 1 Deep Dive): "The Knowledge Bridge" interactive section. Users click through the 3 Gaps (Prompt, Context, Feedback) to see the Before/After transformation.
-         4. Execution Roadmap: A horizontal timeline visualization. Clicking a phase reveals detailed tasks and tech stack alignment.
-         5. Tech Stack & Conclusion: Summary of the tools chosen for the MVP.
-         This structure prioritizes the decision-making flow: Why Idea 1? -> What is the specific strategy? -> How do we build it?
+         1. Hero Section: Focused on "M2COSMOS" branding with a dramatic dark theme. High contrast typography.
+         2. Diagnosis (Radar): Visualizing the strategic choice using bright, glowing lines against the dark background.
+         3. Interactive Strategy: Tabs that reveal "Information Gaps" using complementary colors (Amber vs Blue) to highlight problems and solutions.
+         4. Roadmap: A vertical-to-horizontal responsive timeline designed for clear scanning in a dark environment.
     -->
     <!-- Visualization & Content Choices:
-         1. Radar Chart (Chart.js): To visually demonstrate why Idea 1 is better for the current team (High Team Fit, Low Ops Load) compared to Idea 2.
-         2. Interactive Cards (HTML/JS): For the "Information Gaps". Allows users to actively explore the problem vs. solution space without overwhelming text.
-         3. Dynamic Task Lists (HTML/JS): For the Roadmap. Filters content based on the selected phase to keep the UI clean.
-         4. Flow Diagram (HTML/CSS): Visualizing the "Closed Loop" system using Flexbox/Grid layouts instead of static images.
+         - Radar Chart: Optimized for Dark Mode (White grids, glowing datasets).
+         - Cards: High contrast (Amber border for "Idea 1" to signify it's the winner).
+         - Responsive Logic: Fully mobile-optimized with stackable grids and touch-friendly buttons.
          CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
     -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
-<body class="bg-stone-50 text-stone-800">
+<body class="selection:bg-cyan-500/30">
 
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+    <nav class="sticky top-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/5 shadow-2xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <div class="font-bold text-xl text-stone-900 tracking-tight">AI Startup Strategy</div>
-                <div class="hidden md:flex space-x-8 text-sm font-medium text-stone-600">
-                    <button onclick="scrollToSection('diagnosis')" class="hover:text-blue-600 transition-colors">진단 및 선택</button>
-                    <button onclick="scrollToSection('strategy')" class="hover:text-blue-600 transition-colors">핵심 전략</button>
-                    <button onclick="scrollToSection('roadmap')" class="hover:text-blue-600 transition-colors">로드맵</button>
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-cyan-500 rounded-sm rotate-45 flex items-center justify-center">
+                        <span class="rotate-[-45deg] font-black text-black text-xs">M2</span>
+                    </div>
+                    <span class="font-bold text-xl tracking-tighter text-white">M2COSMOS</span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-stone-400">
+                    <button onclick="scrollToSection('diagnosis')" class="hover:text-cyan-400 transition-colors uppercase tracking-widest">Diagnosis</button>
+                    <button onclick="scrollToSection('strategy')" class="hover:text-cyan-400 transition-colors uppercase tracking-widest">Strategy</button>
+                    <button onclick="scrollToSection('roadmap')" class="hover:text-cyan-400 transition-colors uppercase tracking-widest">Roadmap</button>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="relative overflow-hidden pt-16 pb-24 bg-gradient-to-br from-stone-50 to-stone-100">
+    <header class="relative overflow-hidden pt-20 pb-32 hero-gradient">
         <div class="max-w-5xl mx-auto px-4 text-center">
-            <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-blue-800 uppercase bg-blue-100 rounded-full">
-                Final Strategic Report
+            <div class="inline-block px-4 py-1 mb-8 text-[10px] font-bold tracking-[0.3em] text-cyan-400 uppercase border border-cyan-500/30 rounded-full bg-cyan-500/10">
+                AI Strategic Initiative 2026
             </div>
-            <h1 class="text-4xl md:text-5xl font-extrabold text-stone-900 mb-6 leading-tight">
-                "제품이 곧 영업이다"<br>
-                <span class="text-blue-600">정보의 격차</span>를 파는 버티컬 SaaS
+            <h1 class="text-5xl md:text-7xl font-black text-white mb-8 leading-[1.1] tracking-tight">
+                <span class="text-glow">M2COSMOS</span><br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">사업 아이디어 전략</span>
             </h1>
-            <p class="text-lg md:text-xl text-stone-600 max-w-3xl mx-auto mb-10">
-                현재 팀(기획/개발 1명, UI/UX 1명)의 역량을 극대화할 수 있는 길은 <strong>운영 집약적 서비스</strong>가 아닌 <strong>기술 집약적 프로덕트</strong>입니다.
-                AI 데이터 플랫폼 사업의 성공적인 런칭을 위한 분석과 실행 전략을 제시합니다.
+            <p class="text-lg md:text-2xl text-stone-400 max-w-3xl mx-auto mb-12 font-light leading-relaxed">
+                운영 집약적 서비스에서 벗어나 <strong class="text-white">기술 집약적 프로덕트</strong>로.<br class="hidden md:block">
+                정보의 격차를 해소하는 차세대 AI 마케팅 솔루션의 로드맵입니다.
             </p>
-            <div class="flex justify-center gap-4">
-                <button onclick="scrollToSection('diagnosis')" class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition-all transform hover:-translate-y-1">
-                    분석 결과 보기
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="scrollToSection('diagnosis')" class="px-10 py-4 bg-white text-black font-bold rounded-full hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                    분석 데이터 보기
+                </button>
+                <button onclick="scrollToSection('strategy')" class="px-10 py-4 bg-stone-900 text-white font-bold rounded-full border border-stone-700 hover:border-cyan-400 transition-all">
+                    핵심 전략 탐색
                 </button>
             </div>
         </div>
+        
+        <!-- Decorative elements -->
+        <div class="absolute top-1/2 left-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-[120px] -translate-x-1/2"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-[120px] translate-x-1/3"></div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 pb-20">
 
-        <!-- Section 1: Diagnosis & Choice -->
-        <section id="diagnosis" class="mb-24 scroll-mt-24">
-            <div class="bg-white rounded-2xl shadow-xl p-8 border border-stone-100">
-                <div class="mb-8 border-b border-stone-100 pb-4">
-                    <h2 class="text-2xl font-bold text-stone-900">1. 비즈니스 모델 진단</h2>
-                    <p class="text-stone-500 mt-2">두 가지 아이디어의 강점과 리스크를 분석하여 현재 팀 구성에 최적화된 모델을 선정했습니다.</p>
+        <!-- Section 1: Diagnosis -->
+        <section id="diagnosis" class="mb-32 scroll-mt-24">
+            <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
+                    <div>
+                        <h2 class="text-3xl font-black text-white">01. 아이디어 진단</h2>
+                        <p class="text-stone-500 mt-2">M2COSMOS 팀의 역량에 최적화된 비즈니스 모델을 데이터로 비교합니다.</p>
+                    </div>
+                    <div class="text-xs text-stone-600 font-mono">SCALING_ANALYSIS_V1.0</div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <!-- Text Analysis -->
                     <div class="space-y-6">
-                        <div class="p-6 bg-blue-50 rounded-xl border-l-4 border-blue-500 relative cursor-pointer hover:bg-blue-100 transition-colors" onclick="updateRadar('idea1')">
-                            <div class="absolute top-4 right-4 text-blue-600 font-bold text-sm">추천 모델</div>
-                            <h3 class="text-lg font-bold text-stone-900 mb-2">Idea 1: 소상공인 마케팅 SaaS</h3>
-                            <p class="text-sm text-stone-700 mb-2"><strong>장점:</strong> 제품 중심 성장 가능, 현재 개발/UX 인력 구성에 최적.</p>
-                            <p class="text-sm text-stone-600"><strong>리스크:</strong> 낮은 진입장벽, 플랫폼 API 의존성.</p>
-                            <p class="text-xs text-blue-600 font-medium mt-3">→ 해결책: "Closed Loop" 최적화 엔진으로 진화</p>
+                        <div class="group p-6 bg-cyan-500/5 rounded-2xl border border-cyan-500/20 relative cursor-pointer hover:border-cyan-400 transition-all" onclick="updateRadar('idea1')">
+                            <div class="absolute -top-3 left-6 bg-cyan-500 text-black text-[10px] font-black px-3 py-1 rounded-sm uppercase tracking-tighter">Selected Path</div>
+                            <h3 class="text-xl font-bold text-white mb-2">Idea 1: 소상공인 마케팅 SaaS</h3>
+                            <p class="text-sm text-stone-400 leading-relaxed">
+                                제품 중심의 성장이 가능하며, 소수 정예(개발1, 디자인1) 팀이 <span class="text-cyan-400 font-bold">확장성(Scalability)</span>을 확보하기에 가장 유리한 모델입니다.
+                            </p>
                         </div>
 
-                        <div class="p-6 bg-stone-50 rounded-xl border-l-4 border-stone-300 relative cursor-pointer hover:bg-stone-100 transition-colors" onclick="updateRadar('idea2')">
-                            <h3 class="text-lg font-bold text-stone-900 mb-2">Idea 2: 특화 데이터 라벨링</h3>
-                            <p class="text-sm text-stone-700 mb-2"><strong>장점:</strong> 틈새 시장의 높은 단가, 명확한 수요.</p>
-                            <p class="text-sm text-stone-600"><strong>리스크:</strong> '운영 지옥'. 고도의 인력 관리와 영업 필요.</p>
-                            <p class="text-xs text-stone-500 font-medium mt-3">→ 현재 인력으로는 감당하기 어려움</p>
+                        <div class="p-6 bg-stone-900/40 rounded-2xl border border-stone-800 relative cursor-pointer hover:border-stone-600 transition-all" onclick="updateRadar('idea2')">
+                            <h3 class="text-xl font-bold text-stone-300 mb-2">Idea 2: 특화 데이터 라벨링</h3>
+                            <p class="text-sm text-stone-500 leading-relaxed">
+                                수익성은 명확하나 대규모 인력 관리 리스크가 큽니다. 현재 팀 구성에서는 '운영의 늪'에 빠질 우려가 높습니다.
+                            </p>
                         </div>
                     </div>
 
                     <!-- Chart -->
-                    <div class="flex flex-col items-center">
+                    <div class="relative py-8">
                         <div class="chart-container">
                             <canvas id="diagnosisChart"></canvas>
                         </div>
-                        <p class="text-xs text-stone-400 mt-4 text-center">
-                            * Team Fit: 현재 인력 구성과의 적합성<br>
-                            * Ops Difficulty: 운영 난이도 (낮을수록 좋음)
-                        </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 2: Core Strategy (The Knowledge Bridge) -->
-        <section id="strategy" class="mb-24 scroll-mt-24">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-stone-900">2. 핵심 전략: 정보의 격차(Information Gap) 해소</h2>
-                <p class="text-lg text-stone-600 mt-4 max-w-3xl mx-auto">
-                    단순한 '생성'은 더 이상 경쟁력이 아닙니다. 소상공인이 겪는 <strong>3가지 정보의 격차</strong>를 기술로 메워주는 
-                    <strong>"AI 마케팅 팀장"</strong>으로 포지셔닝해야 합니다.
+        <!-- Section 2: Information Gap Strategy -->
+        <section id="strategy" class="mb-32 scroll-mt-24">
+            <div class="text-center mb-16">
+                <span class="text-amber-500 font-bold text-xs tracking-widest uppercase">The Knowledge Bridge</span>
+                <h2 class="text-4xl md:text-5xl font-black text-white mt-4 mb-6">정보의 격차를 메우는 도구</h2>
+                <p class="text-stone-400 max-w-2xl mx-auto">
+                    단순한 생성 툴이 아닌, 전문가의 '지식 격차'를 메워주는 AI 인터페이스를 구축합니다.
                 </p>
             </div>
 
             <!-- Strategy Tabs -->
-            <div class="flex flex-wrap justify-center gap-4 mb-10">
-                <button id="tab-prompt" onclick="switchStrategy('prompt')" class="px-6 py-2 rounded-full font-medium text-sm transition-all bg-stone-800 text-white shadow-md">
-                    1. 프롬프트 격차
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button id="tab-prompt" onclick="switchStrategy('prompt')" class="px-6 py-3 rounded-full font-bold text-sm transition-all bg-cyan-500 text-black shadow-[0_0_20px_rgba(34,211,238,0.3)]">
+                    프롬프트 격차
                 </button>
-                <button id="tab-context" onclick="switchStrategy('context')" class="px-6 py-2 rounded-full font-medium text-sm transition-all bg-stone-200 text-stone-600 hover:bg-stone-300">
-                    2. 맥락(Context) 격차
+                <button id="tab-context" onclick="switchStrategy('context')" class="px-6 py-3 rounded-full font-bold text-sm transition-all bg-stone-900 text-stone-500 hover:text-white border border-stone-800">
+                    맥락(Context) 격차
                 </button>
-                <button id="tab-feedback" onclick="switchStrategy('feedback')" class="px-6 py-2 rounded-full font-medium text-sm transition-all bg-stone-200 text-stone-600 hover:bg-stone-300">
-                    3. 피드백 격차
+                <button id="tab-feedback" onclick="switchStrategy('feedback')" class="px-6 py-3 rounded-full font-bold text-sm transition-all bg-stone-900 text-stone-500 hover:text-white border border-stone-800">
+                    피드백 격차
                 </button>
             </div>
 
-            <!-- Dynamic Strategy Content -->
-            <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-stone-200 min-h-[400px]">
-                
-                <!-- Content Area -->
-                <div id="strategy-content" class="p-8 md:p-12">
-                    <!-- Content injected by JS -->
+            <!-- Dynamic Content Area -->
+            <div id="strategy-card" class="glass-card rounded-3xl overflow-hidden shadow-2xl border-cyan-500/10">
+                <div id="strategy-content" class="p-8 md:p-16">
+                    <!-- JS Injected Content -->
                 </div>
-
             </div>
 
-            <!-- Closed Loop Concept Visualization -->
-            <div class="mt-12 bg-blue-50 rounded-xl p-8 border border-blue-100">
-                <h3 class="text-lg font-bold text-center text-blue-900 mb-8">지속 가능한 경쟁력: "Closed Loop" 시스템</h3>
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4 max-w-4xl mx-auto">
-                    <div class="flex-1 text-center p-4 bg-white rounded-lg shadow-sm w-full">
-                        <div class="text-2xl mb-2">⚙️</div>
-                        <div class="font-bold text-stone-800">1. 생성/배포</div>
-                        <div class="text-xs text-stone-500 mt-1">AI 자동화</div>
-                    </div>
-                    <div class="hidden md:block text-blue-300 text-2xl font-bold">→</div>
-                    <div class="block md:hidden text-blue-300 text-2xl font-bold">↓</div>
-                    
-                    <div class="flex-1 text-center p-4 bg-white rounded-lg shadow-sm w-full">
-                        <div class="text-2xl mb-2">📊</div>
-                        <div class="font-bold text-stone-800">2. 성과 측정</div>
-                        <div class="text-xs text-stone-500 mt-1">데이터 수집</div>
-                    </div>
-                    <div class="hidden md:block text-blue-300 text-2xl font-bold">→</div>
-                    <div class="block md:hidden text-blue-300 text-2xl font-bold">↓</div>
-
-                    <div class="flex-1 text-center p-4 bg-white rounded-lg shadow-sm w-full ring-2 ring-blue-500 ring-offset-2">
-                        <div class="text-2xl mb-2">🧠</div>
-                        <div class="font-bold text-blue-800">3. 최적화 제안</div>
-                        <div class="text-xs text-blue-600 mt-1">격차 해소의 핵심</div>
-                    </div>
-                    <div class="hidden md:block text-blue-300 text-2xl font-bold">⤴</div>
-                    <div class="block md:hidden text-blue-300 text-2xl font-bold">↑</div>
+            <!-- Closed Loop Visual -->
+            <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+                <div class="p-8 bg-stone-900/50 rounded-2xl border border-stone-800 text-center">
+                    <div class="w-12 h-12 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold">01</div>
+                    <h4 class="text-white font-bold mb-3 uppercase tracking-wider">AI Generation</h4>
+                    <p class="text-stone-500 text-sm">로컬 트렌드가 반영된 고품질 컨텐츠 자동 생성</p>
                 </div>
-                <p class="text-center text-sm text-blue-600 mt-6 font-medium">
-                    "결과가 다음 행동을 결정하는 구조를 만들어야 고객이 이탈하지 않습니다."
-                </p>
+                <div class="p-8 bg-cyan-500/5 rounded-2xl border border-cyan-500/20 text-center ring-1 ring-cyan-500/30">
+                    <div class="w-12 h-12 bg-cyan-500 text-black rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold">02</div>
+                    <h4 class="text-cyan-400 font-bold mb-3 uppercase tracking-wider">Smart Analysis</h4>
+                    <p class="text-stone-400 text-sm">단순 수치가 아닌 '다음 행동'을 결정하는 분석</p>
+                </div>
+                <div class="p-8 bg-stone-900/50 rounded-2xl border border-stone-800 text-center">
+                    <div class="w-12 h-12 bg-stone-800 text-stone-400 rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold">03</div>
+                    <h4 class="text-white font-bold mb-3 uppercase tracking-wider">Auto Optimize</h4>
+                    <p class="text-stone-500 text-sm">반응형 데이터를 학습하여 프롬프트 자동 고도화</p>
+                </div>
             </div>
         </section>
 
-        <!-- Section 3: Execution Roadmap -->
-        <section id="roadmap" class="mb-24 scroll-mt-24">
-            <div class="mb-10">
-                <h2 class="text-2xl font-bold text-stone-900">3. MVP 실행 로드맵 (8주)</h2>
-                <p class="text-stone-500 mt-2">
-                    기획자/개발자 1명, 디자이너 1명 구조에서 가능한 현실적인 마일스톤입니다. 
-                    <strong>'선택과 집중'</strong>을 통해 핵심 가설을 검증합니다.
-                </p>
+        <!-- Section 3: Roadmap -->
+        <section id="roadmap" class="mb-32 scroll-mt-24">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div class="max-w-xl">
+                    <h2 class="text-3xl font-black text-white mb-4">03. MVP 로드맵</h2>
+                    <p class="text-stone-500">M2COSMOS의 핵심 역량을 8주 안에 증명하기 위한 기술-기획 정렬 로드맵입니다.</p>
+                </div>
+                <div class="flex gap-2">
+                    <div class="w-3 h-3 bg-cyan-500 rounded-full animate-pulse"></div>
+                    <div class="text-xs text-stone-500 font-bold uppercase">Development Live</div>
+                </div>
             </div>
 
-            <!-- Roadmap Phases Control -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-8">
-                <button onclick="setPhase(1)" id="phase-btn-1" class="phase-btn p-3 rounded-lg text-left border transition-all bg-blue-600 text-white border-blue-600 shadow-md">
-                    <div class="text-xs opacity-80">Weeks 1-2</div>
-                    <div class="font-bold">1. 기반 & 데이터</div>
+            <!-- Roadmap Selectors -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+                <button onclick="setPhase(1)" id="phase-btn-1" class="phase-btn p-6 rounded-2xl text-left border transition-all bg-cyan-500 text-black border-cyan-500 shadow-lg shadow-cyan-500/20">
+                    <div class="text-[10px] font-black opacity-60 uppercase mb-1">Week 1-2</div>
+                    <div class="font-bold text-lg">기반 & 트렌드</div>
                 </button>
-                <button onclick="setPhase(2)" id="phase-btn-2" class="phase-btn p-3 rounded-lg text-left border bg-white text-stone-500 border-stone-200 hover:bg-stone-50 transition-all">
-                    <div class="text-xs opacity-70">Weeks 3-5</div>
-                    <div class="font-bold">2. No-Prompt UI</div>
+                <button onclick="setPhase(2)" id="phase-btn-2" class="phase-btn p-6 rounded-2xl text-left border bg-stone-900/50 text-stone-500 border-stone-800 hover:border-stone-600 transition-all">
+                    <div class="text-[10px] font-black opacity-60 uppercase mb-1">Week 3-5</div>
+                    <div class="font-bold text-lg">No-Prompt UI</div>
                 </button>
-                <button onclick="setPhase(3)" id="phase-btn-3" class="phase-btn p-3 rounded-lg text-left border bg-white text-stone-500 border-stone-200 hover:bg-stone-50 transition-all">
-                    <div class="text-xs opacity-70">Weeks 6-7</div>
-                    <div class="font-bold">3. 성과 루프</div>
+                <button onclick="setPhase(3)" id="phase-btn-3" class="phase-btn p-6 rounded-2xl text-left border bg-stone-900/50 text-stone-500 border-stone-800 hover:border-stone-600 transition-all">
+                    <div class="text-[10px] font-black opacity-60 uppercase mb-1">Week 6-7</div>
+                    <div class="font-bold text-lg">성과 루프</div>
                 </button>
-                <button onclick="setPhase(4)" id="phase-btn-4" class="phase-btn p-3 rounded-lg text-left border bg-white text-stone-500 border-stone-200 hover:bg-stone-50 transition-all">
-                    <div class="text-xs opacity-70">Week 8</div>
-                    <div class="font-bold">4. 런칭 & 폴리싱</div>
+                <button onclick="setPhase(4)" id="phase-btn-4" class="phase-btn p-6 rounded-2xl text-left border bg-stone-900/50 text-stone-500 border-stone-800 hover:border-stone-600 transition-all">
+                    <div class="text-[10px] font-black opacity-60 uppercase mb-1">Week 8</div>
+                    <div class="font-bold text-lg">런칭 & 검증</div>
                 </button>
             </div>
 
-            <!-- Phase Detail Card -->
-            <div class="bg-white rounded-xl border border-stone-200 p-6 md:p-8 shadow-sm min-h-[300px] relative">
+            <!-- Roadmap Content -->
+            <div class="glass-card rounded-3xl p-8 md:p-12 min-h-[400px]">
                 <div id="phase-content">
-                    <!-- Injected by JS -->
-                </div>
-            </div>
-
-            <!-- Tech Stack Alignment -->
-            <div class="mt-8 pt-8 border-t border-stone-200">
-                <h4 class="text-sm font-bold text-stone-400 uppercase tracking-wider mb-4">Recommended Tech Stack</h4>
-                <div class="flex flex-wrap gap-3">
-                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">Next.js (App Router)</span>
-                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">Supabase (Auth/DB)</span>
-                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">Tailwind CSS</span>
-                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">Shadcn UI</span>
-                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">OpenAI GPT-4o-mini</span>
-                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">LangChain</span>
-                    <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded text-xs font-semibold border border-stone-200">Python/Playwright</span>
+                    <!-- JS Injected -->
                 </div>
             </div>
         </section>
-
-        <!-- Footer -->
-        <footer class="text-center py-12 border-t border-stone-200">
-            <h3 class="text-lg font-bold text-stone-800 mb-2">Final Advice</h3>
-            <p class="text-stone-500 max-w-2xl mx-auto mb-6">
-                "초기 2주, 전국이 아닌 <strong>특정 핫플레이스(예: 성수동)</strong> 한 곳의 데이터만 완벽하게 장악하세요.<br>
-                그 좁은 시장에서의 압도적인 정보 격차가 성공의 열쇠입니다."
-            </p>
-            <div class="text-xs text-stone-400">
-                Generated based on Strategy Report for AI Data Platform Startup
-            </div>
-        </footer>
 
     </main>
 
-    <script>
-        // --- Data Definitions ---
+    <!-- Footer -->
+    <footer class="bg-black py-20 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center space-x-2 mb-8">
+                <div class="w-6 h-6 bg-cyan-500 rounded-sm rotate-45"></div>
+                <span class="font-bold text-white tracking-widest uppercase">M2COSMOS</span>
+            </div>
+            <p class="text-stone-500 text-sm max-w-lg mx-auto leading-relaxed">
+                우리는 단순한 코드가 아닌, 비즈니스의 지평을 넓히는 AI 기술을 구축합니다.<br>
+                M2COSMOS AI Strategy Dashboard 2026.
+            </p>
+        </div>
+    </footer>
 
+    <script>
+        // --- Strategy Data ---
         const strategyDetails = {
             prompt: {
-                title: "1. 프롬프트 격차: '무엇을 시켜야 할지 모른다'",
-                problem: "사용자는 '좋은 질문'을 할 줄 모릅니다. 결과가 나쁘면 AI 탓을 하고 떠납니다.",
-                solution: "<strong>No-Prompt Interface:</strong> 사용자가 글을 쓰는 대신, 상황(Context) 버튼만 누르게 하세요.",
+                title: "프롬프트 격차: '전문적 지시의 자동화'",
+                problem: "소상공인은 AI에게 '팔리는 글'을 요청하는 법을 모릅니다.",
+                solution: "<strong>Intent-Based UI:</strong> 상황과 목적만 선택하면 뒷단에서 수만 줄의 최적화 프롬프트가 작동하는 무입력 시스템.",
+                accent: "cyan",
                 example: {
-                    before: "\"카페 홍보글 써줘\" (모호함)",
-                    after: "\"비 오는 날\", \"재고 소진\", \"주말 할인\" 버튼 클릭 → 자동 최적화 생성"
-                },
-                tags: ["LangChain", "Prompt Chaining"]
+                    before: "마케팅 전문가처럼 글 써줘 (결과 실패)",
+                    after: "'폭염 경보', '아이스 아메리카노 1+1' 버튼 조합 → 즉시 생성"
+                }
             },
             context: {
-                title: "2. 맥락 격차: '우리 동네를 모른다'",
-                problem: "범용 AI는 '성수동 감성'과 '을지로 감성'을 구분하지 못합니다.",
-                solution: "<strong>Hyper-Local RAG:</strong> 특정 지역/업종의 트렌드 데이터를 미리 벡터 DB에 넣어두고, 생성 시 주입합니다.",
+                title: "맥락 격차: '로컬 데이터의 주입'",
+                problem: "ChatGPT는 성수동의 이번 주 팝업 스토어 유행을 알지 못합니다.",
+                solution: "<strong>Real-time RAG:</strong> 매일 갱신되는 로컬 데이터 DB와 연동하여, 지금 이 지역에서 반응 오는 문법을 자동 주입.",
+                accent: "amber",
                 example: {
-                    before: "일반적인 커피 맛 묘사",
-                    after: "\"성수동 2030 여성이 선호하는 인더스트리얼 인테리어 무드\" 반영"
-                },
-                tags: ["Vector DB", "Crawling", "RAG"]
+                    before: "평범한 카페 마케팅 문구",
+                    after: "\"현재 연무장길 인스타 핫키워드 #인더스트리얼 반영\""
+                }
             },
             feedback: {
-                title: "3. 피드백 격차: '이게 잘 된 건지 모른다'",
-                problem: "소상공인은 데이터 분석가가 아닙니다. 그래프를 봐도 행동을 못합니다.",
-                solution: "<strong>Actionable Dashboard:</strong> 분석 대신 '제안'을 합니다. 성과 기반의 재실행 루프를 만듭니다.",
+                title: "피드백 격차: '데이터 기반 의사결정'",
+                problem: "조회수 1000이 좋은 것인지, 나쁜 것인지 소상공인은 판단할 수 없습니다.",
+                solution: "<strong>AI Coach:</strong> 수치 대신 '메시지'로 결과를 해석하고, 다음 날의 컨텐츠 기획안을 먼저 제안합니다.",
+                accent: "cyan",
                 example: {
-                    before: "도달률 그래프 표시",
-                    after: "\"지난주 목요일 반응 좋음. 오늘 다시 올려볼까요?\" (Y/N)"
-                },
-                tags: ["Instagram Graph API", "Data Analysis"]
+                    before: "엑셀 시트와 그래프",
+                    after: "\"어제 릴스가 반응이 좋았어요. 오늘 2시에 비슷한 톤으로 올려보세요!\""
+                }
             }
         };
 
         const roadmapPhases = [
             {
                 id: 1,
-                title: "Phase 1: 기반 구축 및 데이터 확보 (1-2주)",
-                goal: "타겟 핫플레이스(예: 성수동)의 트렌드 데이터 장악",
+                title: "Phase 1: 기반 인프라 & 로컬 트렌드 장악",
+                goal: "성수동 등 타겟 지역의 트렌드 지식 베이스 구축",
                 tasks: [
-                    { role: "기획", desc: "버티컬 업종 선정 및 타겟 페르소나 정의 (소상공인 인터뷰)" },
-                    { role: "개발", desc: "Python/Playwright로 특정 지역 인스타/네이버 크롤러 구축" },
-                    { role: "디자인", desc: "브랜드 아이덴티티 및 핵심 컬러 시스템 수립" },
-                    { role: "공통", desc: "초기 RAG용 로컬 트렌드 지식 베이스(Knowledge Base) 구축" }
+                    { role: "Plan", desc: "특정 버티컬(카페/F&B) 페르소나 및 마케팅 문법 정의" },
+                    { role: "Dev", desc: "Python/Playwright 기반 로컬 인스타/네이버 크롤러 완성" },
+                    { role: "Design", desc: "Dark-mode 기반 디자인 시스템 및 UI 컴포넌트 제작" }
                 ],
-                focus: "Tech: Python, Playwright, Vector DB"
+                tech: "Python, Playwright, Supabase Vector"
             },
             {
                 id: 2,
-                title: "Phase 2: No-Prompt UI 구현 (3-5주)",
-                goal: "사용자가 고민 없이 버튼 하나로 고품질 컨텐츠 생성",
+                title: "Phase 2: Intent-Driven 컨텐츠 엔진",
+                goal: "No-Prompt UI 기반의 고품질 생성 경험 구현",
                 tasks: [
-                    { role: "디자인", desc: "'상황 버튼' 중심의 컨텐츠 생성 Flow 와이어프레임 설계" },
-                    { role: "개발", desc: "네이버 지도 API 연동: 가게 정보(메뉴, 위치) 자동 수집" },
-                    { role: "개발", desc: "LangChain 기반 업종별 동적 프롬프트 템플릿 엔진 개발" },
-                    { role: "UX", desc: "AI 생성 결과물에 '마케팅적 근거'를 표시하는 UI 설계" }
+                    { role: "Dev", desc: "LangChain을 활용한 업종별 Prompt Chaining 파이프라인" },
+                    { role: "Design", desc: "사용자 조작을 최소화한 상황 기반(Situation-based) UX 설계" },
+                    { role: "Dev", desc: "네이버 지도 API 연동을 통한 가게 상세 정보 자동 임베딩" }
                 ],
-                focus: "Tech: Next.js, LangChain, OpenAI API"
+                tech: "Next.js, GPT-4o, LangChain"
             },
             {
                 id: 3,
-                title: "Phase 3: 성과 루프(Closed-Loop) 구축 (6-7주)",
-                goal: "배포 결과를 분석하여 다음 행동 제안하기",
+                title: "Phase 3: Closed-Loop 인사이트 시스템",
+                goal: "성과 측정 및 다음 행동 제안 엔진 연동",
                 tasks: [
-                    { role: "개발", desc: "인스타그램 Graph API 연동 (배포 및 인사이트 수집)" },
-                    { role: "디자인", desc: "성과 지표를 '행동 제안(Action Item)'으로 치환한 대시보드" },
-                    { role: "개발", desc: "성과 데이터 기반 차기 컨텐츠 추천 알고리즘 구현" },
-                    { role: "기획", desc: "초기 사용자 5인 대상 사용성 테스트(UT) 및 피드백" }
+                    { role: "Dev", desc: "Instagram Graph API 연동 및 인사이트 수집 모듈" },
+                    { role: "UX", desc: "데이터 분석을 텍스트 조언으로 변환하는 피드백 UI 구현" },
+                    { role: "Plan", desc: "클로즈 베타 테스터 모집 및 실제 업로드 전환율 측정" }
                 ],
-                focus: "Tech: Supabase Cron Jobs, Meta API"
+                tech: "Meta API, Edge Functions"
             },
             {
                 id: 4,
-                title: "Phase 4: 폴리싱 및 런칭 (8주)",
-                goal: "안정적인 MVP 시장 출시",
+                title: "Phase 4: 시장 검증 및 폴리싱",
+                goal: "실제 유료 결제 의사 확인 및 제품 고도화",
                 tasks: [
-                    { role: "전체", desc: "버그 수정 및 UI 폴리싱 (애니메이션, 로딩 처리)" },
-                    { role: "개발", desc: "Vercel 배포 및 도메인 연결" },
-                    { role: "기획", desc: "클로즈 베타 테스터 모집 및 온보딩 가이드 제작" }
+                    { role: "Dev", desc: "자동 배포 스케줄러 안정화 및 결제 연동(Toss 등)" },
+                    { role: "Full", desc: "사용성 테스트(UT) 기반 인터랙션 및 애니메이션 디테일 수정" },
+                    { role: "Plan", desc: "MVP 성과 분석 및 정식 런칭 전략 수립" }
                 ],
-                focus: "Tech: Vercel, Analytics"
+                tech: "Vercel, Analytics"
             }
         ];
 
-        // --- Radar Chart Initialization ---
+        // --- Radar Chart ---
         let radarChart;
-
-        function initRadarChart() {
+        function initRadar() {
             const ctx = document.getElementById('diagnosisChart').getContext('2d');
-            
-            const data = {
-                labels: ['Team Fit (기획/UX)', 'Scalability (확장성)', 'Market Novelty (참신성)', 'Ops Ease (운영 용이성)', 'Dev Feasibility (개발 가능성)'],
-                datasets: [{
-                    label: 'Idea 1: SaaS Platform',
-                    data: [90, 85, 40, 80, 85], // High Fit, High Ops Ease, Low Novelty
-                    fill: true,
-                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                    borderColor: 'rgb(37, 99, 235)',
-                    pointBackgroundColor: 'rgb(37, 99, 235)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgb(37, 99, 235)'
-                }, {
-                    label: 'Idea 2: Data Labeling',
-                    data: [50, 60, 80, 20, 70], // Low Ops Ease (Hell), High Novelty
-                    fill: true,
-                    backgroundColor: 'rgba(120, 113, 108, 0.2)',
-                    borderColor: 'rgb(120, 113, 108)',
-                    pointBackgroundColor: 'rgb(120, 113, 108)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgb(120, 113, 108)'
-                }]
-            };
-
-            const config = {
+            radarChart = new Chart(ctx, {
                 type: 'radar',
-                data: data,
+                data: {
+                    labels: ['Team Fit', 'Scalability', 'Novelty', 'Ops Ease', 'Dev Feasibility'],
+                    datasets: [{
+                        label: 'Idea 1: SaaS (M2COSMOS Choice)',
+                        data: [95, 90, 60, 85, 90],
+                        borderColor: '#22D3EE',
+                        backgroundColor: 'rgba(34, 211, 238, 0.2)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#22D3EE',
+                        pointHoverRadius: 8
+                    }, {
+                        label: 'Idea 2: Data Labeling',
+                        data: [50, 65, 85, 20, 75],
+                        borderColor: '#F59E0B',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#F59E0B'
+                    }]
+                },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    elements: {
-                        line: { borderWidth: 3 }
-                    },
                     scales: {
                         r: {
-                            angleLines: { display: true },
-                            suggestedMin: 0,
-                            suggestedMax: 100,
-                            ticks: { display: false } // Hide numbers for cleaner look
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            angleLines: { color: 'rgba(255,255,255,0.1)' },
+                            pointLabels: { color: '#888', font: { size: 10, weight: 'bold' } },
+                            ticks: { display: false, max: 100, min: 0 }
                         }
                     },
                     plugins: {
-                        legend: { position: 'bottom' }
+                        legend: { labels: { color: '#ccc', font: { size: 11 } }, position: 'bottom' }
                     }
                 }
-            };
-
-            radarChart = new Chart(ctx, config);
+            });
         }
 
-        // --- Interaction Functions ---
-
         function updateRadar(idea) {
-            // Highlights one dataset by dimming the other
-            const idea1Index = 0;
-            const idea2Index = 1;
-            
+            const i1 = 0, i2 = 1;
             if (idea === 'idea1') {
-                radarChart.data.datasets[idea1Index].backgroundColor = 'rgba(37, 99, 235, 0.5)';
-                radarChart.data.datasets[idea2Index].backgroundColor = 'rgba(120, 113, 108, 0.05)';
-                radarChart.data.datasets[idea2Index].borderColor = 'rgba(120, 113, 108, 0.2)';
+                radarChart.data.datasets[i1].backgroundColor = 'rgba(34, 211, 238, 0.4)';
+                radarChart.data.datasets[i2].backgroundColor = 'rgba(245, 158, 11, 0.05)';
+                radarChart.data.datasets[i2].borderColor = 'rgba(245, 158, 11, 0.2)';
             } else {
-                radarChart.data.datasets[idea1Index].backgroundColor = 'rgba(37, 99, 235, 0.05)';
-                radarChart.data.datasets[idea1Index].borderColor = 'rgba(37, 99, 235, 0.2)';
-                radarChart.data.datasets[idea2Index].backgroundColor = 'rgba(120, 113, 108, 0.5)';
-                radarChart.data.datasets[idea2Index].borderColor = 'rgb(120, 113, 108)';
+                radarChart.data.datasets[i1].backgroundColor = 'rgba(34, 211, 238, 0.05)';
+                radarChart.data.datasets[i1].borderColor = 'rgba(34, 211, 238, 0.2)';
+                radarChart.data.datasets[i2].backgroundColor = 'rgba(245, 158, 11, 0.3)';
+                radarChart.data.datasets[i2].borderColor = '#F59E0B';
             }
             radarChart.update();
         }
 
+        // --- Strategy Switch ---
         function switchStrategy(key) {
-            // 1. Update Buttons
+            const data = strategyDetails[key];
+            const contentDiv = document.getElementById('strategy-content');
+            
+            // UI Update
             ['prompt', 'context', 'feedback'].forEach(k => {
                 const btn = document.getElementById(`tab-${k}`);
                 if (k === key) {
-                    btn.classList.remove('bg-stone-200', 'text-stone-600');
-                    btn.classList.add('bg-stone-800', 'text-white', 'shadow-md');
+                    btn.className = `px-6 py-3 rounded-full font-bold text-sm transition-all bg-${data.accent === 'cyan' ? 'cyan-500' : 'amber-500'} text-black shadow-lg`;
                 } else {
-                    btn.classList.add('bg-stone-200', 'text-stone-600');
-                    btn.classList.remove('bg-stone-800', 'text-white', 'shadow-md');
+                    btn.className = "px-6 py-3 rounded-full font-bold text-sm transition-all bg-stone-900 text-stone-500 border border-stone-800";
                 }
             });
 
-            // 2. Update Content with Animation
-            const contentDiv = document.getElementById('strategy-content');
-            const data = strategyDetails[key];
-            
             contentDiv.innerHTML = `
-                <div class="animate-fade-in-up">
-                    <div class="flex flex-col md:flex-row justify-between items-start gap-8">
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold text-stone-900 mb-4">${data.title}</h3>
-                            <div class="bg-red-50 p-4 rounded-lg border border-red-100 mb-4">
-                                <span class="font-bold text-red-700 block mb-1">😟 Problem</span>
-                                <p class="text-stone-700">${data.problem}</p>
+                <div class="animate-fade-in flex flex-col lg:flex-row gap-12">
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-2 h-8 bg-${data.accent === 'cyan' ? 'cyan-500' : 'amber-500'}"></div>
+                            <h3 class="text-3xl font-black text-white">${data.title}</h3>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="p-5 bg-stone-900/50 rounded-xl border-l-4 border-red-500/50">
+                                <span class="text-xs font-black text-red-500 uppercase tracking-tighter">Gap / Problem</span>
+                                <p class="text-stone-300 mt-1">${data.problem}</p>
                             </div>
-                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                                <span class="font-bold text-blue-700 block mb-1">💡 Solution</span>
-                                <p class="text-stone-800">${data.solution}</p>
-                            </div>
-                            <div class="mt-4 flex gap-2">
-                                ${data.tags.map(tag => `<span class="text-xs px-2 py-1 bg-stone-100 text-stone-500 rounded border">${tag}</span>`).join('')}
+                            <div class="p-5 bg-stone-900/50 rounded-xl border-l-4 border-green-500/50">
+                                <span class="text-xs font-black text-green-500 uppercase tracking-tighter">M2COSMOS Solution</span>
+                                <p class="text-stone-300 mt-1">${data.solution}</p>
                             </div>
                         </div>
-                        
-                        <div class="w-full md:w-1/2 bg-stone-50 rounded-xl p-6 border border-stone-200 relative">
-                            <div class="absolute top-0 right-0 bg-stone-200 text-stone-600 text-xs px-2 py-1 rounded-bl-lg font-bold">Scenario</div>
-                            <div class="space-y-4 mt-2">
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-black/40 rounded-2xl p-8 border border-white/5 h-full relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 p-3 bg-stone-800 text-[10px] font-bold text-stone-500">USER_SIMULATION</div>
+                            <div class="space-y-6">
                                 <div>
-                                    <div class="text-xs font-bold text-stone-400 mb-1">BEFORE (Chat GPT)</div>
-                                    <div class="p-3 bg-white border border-stone-200 rounded text-stone-400 italic text-sm">
-                                        ${data.example.before}
-                                    </div>
+                                    <div class="text-[10px] text-stone-600 font-bold mb-2 uppercase">Direct Prompting (Pain)</div>
+                                    <div class="p-4 bg-stone-950 border border-stone-800 rounded-lg text-stone-500 text-sm italic">"${data.example.before}"</div>
                                 </div>
-                                <div class="text-center text-stone-300">⬇</div>
+                                <div class="flex justify-center"><span class="text-cyan-500/50 text-xl font-bold">↓↓↓</span></div>
                                 <div>
-                                    <div class="text-xs font-bold text-blue-500 mb-1">AFTER (Our SaaS)</div>
-                                    <div class="p-3 bg-blue-600 text-white rounded shadow-lg text-sm font-medium">
-                                        ${data.example.after}
-                                    </div>
+                                    <div class="text-[10px] text-cyan-500 font-bold mb-2 uppercase">M2COSMOS Engine (Gain)</div>
+                                    <div class="p-4 bg-cyan-500 text-black font-bold rounded-lg shadow-2xl shadow-cyan-500/20 text-sm">"${data.example.after}"</div>
                                 </div>
                             </div>
                         </div>
@@ -472,48 +429,40 @@
             `;
         }
 
-        function setPhase(phaseId) {
-            // Update buttons
-            for (let i = 1; i <= 4; i++) {
+        // --- Roadmap Phase ---
+        function setPhase(id) {
+            const phase = roadmapPhases.find(p => p.id === id);
+            const contentDiv = document.getElementById('phase-content');
+            
+            // Buttons
+            for(let i=1; i<=4; i++) {
                 const btn = document.getElementById(`phase-btn-${i}`);
-                if (i === phaseId) {
-                    btn.className = "phase-btn p-3 rounded-lg text-left border transition-all bg-blue-600 text-white border-blue-600 shadow-md ring-2 ring-blue-200 transform scale-105";
+                if (i === id) {
+                    btn.className = "phase-btn p-6 rounded-2xl text-left border transition-all bg-cyan-500 text-black border-cyan-500 shadow-lg shadow-cyan-500/20 ring-2 ring-white/20 transform scale-105 z-10";
                 } else {
-                    btn.className = "phase-btn p-3 rounded-lg text-left border bg-white text-stone-500 border-stone-200 hover:bg-stone-50 transition-all opacity-80";
+                    btn.className = "phase-btn p-6 rounded-2xl text-left border bg-stone-900/50 text-stone-500 border-stone-800 hover:border-stone-600 transition-all";
                 }
             }
 
-            // Update content
-            const phase = roadmapPhases.find(p => p.id === phaseId);
-            const contentDiv = document.getElementById('phase-content');
-            
-            const taskListHTML = phase.tasks.map(t => `
-                <li class="flex items-start">
-                    <span class="inline-flex items-center justify-center h-6 w-16 rounded-full bg-stone-100 text-stone-600 text-[10px] font-bold uppercase mr-3 mt-0.5 flex-shrink-0 border border-stone-200">
-                        ${t.role}
-                    </span>
-                    <span class="text-stone-700 text-sm leading-relaxed">${t.desc}</span>
-                </li>
-            `).join('');
-
             contentDiv.innerHTML = `
                 <div class="animate-fade-in">
-                    <div class="flex flex-col md:flex-row justify-between items-start mb-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
                         <div>
-                            <h3 class="text-xl font-bold text-stone-900">${phase.title}</h3>
-                            <p class="text-blue-600 font-medium mt-1">🎯 Goal: ${phase.goal}</p>
+                            <h3 class="text-2xl font-bold text-white mb-2">${phase.title}</h3>
+                            <p class="text-cyan-400 font-medium italic text-sm">Target: ${phase.goal}</p>
+                        </div>
+                        <div class="px-4 py-2 bg-stone-950 rounded-lg border border-white/10 text-xs font-mono text-stone-500">
+                            TECH_STK: ${phase.tech}
                         </div>
                     </div>
                     
-                    <div class="bg-stone-50 rounded-lg p-5 border border-stone-100">
-                        <ul class="space-y-3">
-                            ${taskListHTML}
-                        </ul>
-                    </div>
-
-                    <div class="mt-4 text-right">
-                        <span class="text-xs font-bold text-stone-400 uppercase tracking-wide">Key Tech:</span>
-                        <span class="text-xs text-stone-600 ml-2 font-mono bg-stone-100 px-2 py-1 rounded">${phase.focus}</span>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        ${phase.tasks.map((t, idx) => `
+                            <div class="p-6 bg-white/5 rounded-xl border border-white/5 hover:bg-white/[0.08] transition-colors">
+                                <div class="text-[10px] font-black text-stone-500 uppercase mb-3 px-2 py-0.5 bg-white/5 inline-block rounded">${t.role}</div>
+                                <p class="text-stone-300 text-sm leading-relaxed">${t.desc}</p>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
             `;
@@ -523,25 +472,16 @@
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
-        // --- Animations CSS Injection ---
+        // --- Init ---
         const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes fadeInUp {
-                from { opacity: 0; transform: translateY(10px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            .animate-fade-in-up { animation: fadeInUp 0.4s ease-out forwards; }
-            .animate-fade-in { animation: fadeInUp 0.3s ease-out forwards; }
-        `;
+        style.innerHTML = `@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } } .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }`;
         document.head.appendChild(style);
 
-        // --- Initialization ---
-        window.onload = function() {
-            initRadarChart();
-            switchStrategy('prompt'); // Default tab
-            setPhase(1); // Default phase
+        window.onload = () => {
+            initRadar();
+            switchStrategy('prompt');
+            setPhase(1);
         };
-
     </script>
 </body>
 </html>
